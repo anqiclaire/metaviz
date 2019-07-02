@@ -249,7 +249,7 @@
       }
       function readLocalData() {
         let reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
-        reader.open('GET', "file:///E:/webapp/data.txt", false)
+        reader.open('GET', "file:///E:/metaviz/data.txt", false)
         reader.send(null)
         let text = reader.responseText
         console.log(text)
