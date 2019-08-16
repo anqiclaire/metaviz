@@ -31,6 +31,8 @@
     <canvas id="unit-cell" width="800" height="800"></canvas>
     <div>Matlab string: <div id="matlab-string"></div></div>
     <div>Pixel string: <div id="pixel-string"></div></div>
+    <div>Youngs Modulus (Pa): <div id="youngs-modulus"></div></div>
+    <div>Poisson's Ratio: <div id="poissons-ratio"></div></div>
     <div>PSV bandgap: <div id="psv-bandgap"></div></div>
     <div>SH bandgap: <div id="sh-bandgap"></div></div>
     <script>
@@ -56,6 +58,8 @@
       const matlabStrElem = document.getElementById('matlab-string')
       const psvElem = document.getElementById('psv-bandgap')
       const shElem = document.getElementById('sh-bandgap')
+      const ymElem = document.getElementById('youngs-modulus')
+      const prElem = document.getElementById('poissons-ratio')
       const dataDict = readLocalData() // read local PSV, SH data
       console.log(dataDict)
       // c.addEventListener('mousemove', (ev) => {
@@ -86,6 +90,8 @@
         updateSH()
         showPSVString()
         showSHString()
+        showYoungsModulusString()
+        showPoissonsRatioString()
         generate_table()
       })
       function pt2pixel (w, h, vxsz, pointerX, pointerY) {
@@ -160,6 +166,8 @@
           updateSH()
           showPSVString()
           showSHString()
+          showYoungsModulusString()
+          showPoissonsRatioString()
           generate_table()
       }
       function resetPixel (pos) {
@@ -175,6 +183,8 @@
           updateSH()
           showPSVString()
           showSHString()
+          showYoungsModulusString()
+          showPoissonsRatioString()
           generate_table()
       }
 
@@ -249,16 +259,18 @@
       }
       function readLocalData() {
         let reader = new XMLHttpRequest() || new ActiveXObject('MSXML2.XMLHTTP');
-        reader.open('GET', "file:///E:/metaviz/data.txt", false)
+        reader.open('GET', "file:///E:/metaviz/datanew.txt", false)
         reader.send(null)
         let text = reader.responseText
         console.log(text)
         let textByLine = text.split("\n")
-        let dataDict = {"PSV":{}, "SH":{}}
+        let dataDict = {"PSV":{}, "SH":{}, "YoungsModulus":{}, "PoissonsRatio":{}}
         for (let r = 0; r < textByLine.length; r++) {
           let line = textByLine[r].split("/")
           dataDict["PSV"][line[0]] = line[1]
           dataDict["SH"][line[0]] = line[2]
+          dataDict["YoungsModulus"][line[0]] = line[3]
+          dataDict["PoissonsRatio"][line[0]] = line[4]
         }
         return dataDict
       }
@@ -276,6 +288,22 @@
         }
         else {
           shElem.innerText = "N/A"
+        }
+      }
+      function showYoungsModulusString() {
+        if (matlabStrElem.innerText in dataDict.YoungsModulus) {
+          ymElem.innerText = dataDict.YoungsModulus[matlabStrElem.innerText]
+        }
+        else {
+          ymElem.innerText = "N/A"
+        }
+      }
+      function showPoissonsRatioString() {
+        if (matlabStrElem.innerText in dataDict.PoissonsRatio) {
+          prElem.innerText = dataDict.PoissonsRatio[matlabStrElem.innerText]
+        }
+        else {
+          prElem.innerText = "N/A"
         }
       }
       function updatePSV() {
@@ -390,6 +418,8 @@
       updateSH()
       showPSVString()
       showSHString()
+      showYoungsModulusString()
+      showPoissonsRatioString()
       generate_table()
     </script>
   </body>
